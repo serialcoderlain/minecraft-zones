@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'forge'
+
+version = "0.2"
+group= "com.mycompanioncube.zones" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "zones"
+
+minecraft {
+    version = "1.8-11.14.1.1334"
+    runDir = "eclipse"
+    mappings = "snapshot_20141130"
+}
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': 'Gradle Quickstart',
+				   'Implementation-Version': version
+	}
+}
+
+uploadArchives {
+	repositories {
+	   flatDir {
+		   dirs 'repos'
+	   }
+	}
+}
+
+dependencies {
+   
+}
+
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

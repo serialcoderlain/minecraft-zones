@@ -1,0 +1,16 @@
+[
+{
+  "modid": "Zones",
+  "name": "Zones mod",
+  "description": "Adds user definable zones with names and optional mob spawn protection.",
+   "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Serial Coder Lain"],
+  "credits": "Whatevs.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

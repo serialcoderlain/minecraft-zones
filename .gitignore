@@ -41,3 +41,13 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.classpath
+.gradle/2.0/taskArtifacts/cache.properties
+.settings/org.eclipse.jdt.core.prefs
+*.lock
+.gradle/2.0/taskArtifacts/fileSnapshots.bin
+*.bin
+.gradle/gradle.log
+*.project
+.settings/gradle/org.springsource.ide.eclipse.gradle.core.prefs
+*.properties
