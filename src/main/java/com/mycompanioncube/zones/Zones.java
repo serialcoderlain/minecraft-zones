@@ -46,7 +46,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class Zones {
 	public static final String MODID = "Zones";
 	public static final String NAME = "Zones";
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "0.3.0";
 
 	protected Map<EntityPlayer, Zone> playerMap = new HashMap<EntityPlayer, Zone>();
 	protected ZoneManager zoneManager = new ZoneManager();
