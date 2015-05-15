@@ -13,7 +13,7 @@ public class Zone {
 	protected String zoneName;
 
 	/** Creator name */
-	protected String zoneCreator;
+	//protected String zoneCreator;
 
 	/** List of all the bounding boxes that makes up this zone */
 	protected List<ZoneBoundingBox> boundingBoxes = new ArrayList<ZoneBoundingBox>();
@@ -41,9 +41,11 @@ public class Zone {
 	 * @return True if this position is contained within this zone
 	 */
 	public boolean isInZone(int x, int y, int z) {
-		for (ZoneBoundingBox b : boundingBoxes) {
-			if (b.isInZone(x, y, z)) {
-				return true;
+		if (boundingBoxes != null) {
+			for (ZoneBoundingBox b : boundingBoxes) {
+				if (b.isInZone(x, y, z)) {
+					return true;
+				}
 			}
 		}
 
@@ -52,6 +54,7 @@ public class Zone {
 
 	/**
 	 * Sets this zone as protected (hinders spawning of hostile mobs)
+	 * 
 	 * @param isProtected
 	 */
 	public void setProtected(boolean isProtected) {
@@ -60,6 +63,7 @@ public class Zone {
 
 	/**
 	 * Returns the name of this zone
+	 * 
 	 * @return
 	 */
 	public String getName() {
@@ -68,6 +72,7 @@ public class Zone {
 
 	/**
 	 * Builder function that creates a new zone based on the given coordinates
+	 * 
 	 * @param string
 	 * @param x1
 	 * @param y1
@@ -83,13 +88,15 @@ public class Zone {
 		return z;
 	}
 
-	
 	/**
 	 * Adds a bounding box to this zone.
 	 * 
 	 * @param zoneBoundingBox
 	 */
 	void addBox(ZoneBoundingBox zoneBoundingBox) {
+		if (boundingBoxes == null)
+			boundingBoxes = new ArrayList<ZoneBoundingBox>();
+
 		if (!boundingBoxes.contains(zoneBoundingBox)) {
 			boundingBoxes.add(zoneBoundingBox);
 		}
@@ -101,6 +108,7 @@ public class Zone {
 
 	/**
 	 * Returns all the bounding boxes that makes up this zone
+	 * 
 	 * @return
 	 */
 	public List<ZoneBoundingBox> getBoxes() {
@@ -109,11 +117,16 @@ public class Zone {
 
 	/**
 	 * Removes a bounding box from the zone.
+	 * 
 	 * @param zoneBoundingBox
 	 * @return
 	 */
 	public boolean removeBox(ZoneBoundingBox zoneBoundingBox) {
 		ZoneBoundingBox r = null;
+		
+		if (boundingBoxes == null)
+			return false;
+
 		for (ZoneBoundingBox b : boundingBoxes) {
 			if (b.equals(zoneBoundingBox)) {
 				r = b;

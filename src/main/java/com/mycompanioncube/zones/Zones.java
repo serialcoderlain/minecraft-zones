@@ -23,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.WorldProviderSurface;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -81,7 +80,7 @@ public class Zones {
 		public void onLivingSpawnEvent(LivingSpawnEvent event) {
 			if (!(event.world.provider instanceof WorldProviderSurface))
 				return;
-			
+
 			Zone z = zoneManager.getZone((int) event.x, (int) event.y, (int) event.z);
 
 			if (z != null && z.isProtected()) {
@@ -90,15 +89,10 @@ public class Zones {
 			}
 		}
 
-		@EventHandler
-		public void worldEvent(WorldEvent event) {
-			System.out.println("Saving zones");
-			save();
-		}
-
-		@EventHandler
-		public void eventHandler(RenderGameOverlayEvent event) {
-			System.out.println("Overlay");
+		@SubscribeEvent
+		public void worldEvent(WorldEvent.Save event) {
+			if (event.world.provider instanceof WorldProviderSurface)
+				save();
 		}
 	}
 
@@ -138,6 +132,7 @@ public class Zones {
 	}
 
 	public void save() {
+		//System.out.println("Saving zones");
 		GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().excludeFieldsWithModifiers(Modifier.TRANSIENT);
 
 		Gson gson = gsonBuilder.create();
@@ -152,7 +147,6 @@ public class Zones {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Saved zones");
 	}
 
 	@EventHandler
