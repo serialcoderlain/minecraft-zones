@@ -51,3 +51,9 @@ Temporary Items
 *.project
 .settings/gradle/org.springsource.ide.eclipse.gradle.core.prefs
 *.properties
+/bin/
+config/
+logs/
+saves/
+options.txt
+*.json
