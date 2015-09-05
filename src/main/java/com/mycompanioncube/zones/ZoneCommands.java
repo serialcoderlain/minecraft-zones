@@ -82,6 +82,8 @@ public class ZoneCommands implements ICommand {
 			commandProtect(arg0, arg1);
 		} else if (arg1[0].toLowerCase().equals("unprotect")) {
 			commandUnprotect(arg0, arg1);
+		} else if (arg1[0].toLowerCase().equals("setcreator")) {
+			commandSetCreator(arg0, arg1);
 		} else if (arg1[0].toLowerCase().equals("village")) {
 			commandVillage(arg0);
 		} else if (arg1[0].toLowerCase().equals("mark")) {
@@ -108,7 +110,8 @@ public class ZoneCommands implements ICommand {
 
 		if (a.isEmpty()) {
 			for (Zone z : Zones.instance.getZoneManager().getZones()) {
-				arg0.addChatMessage(new ChatComponentText("[Zone] Zone: " + z.getName() + (z.isProtected() ? " (protected)" : "")));
+				arg0.addChatMessage(new ChatComponentText(
+						"[Zone] Zone: " + z.getName() + (z.getZoneCreator() == null ? "" : " (" + z.getZoneCreator() + ")") + (z.isProtected() ? " (protected)" : "")));
 			}
 		} else {
 			Zone z = Zones.instance.getZoneByName(a);
@@ -199,7 +202,7 @@ public class ZoneCommands implements ICommand {
 			Block blockFromItem = Block.getBlockFromItem(item.getItem());
 
 			System.out.println(va.getCenter());
-			Zone z1 = new Zone("Village");
+			Zone z1 = new Zone("Village", arg0.getName());
 			Zones.instance.addZone(z1);
 
 			if (blockFromItem != null) {
@@ -247,6 +250,25 @@ public class ZoneCommands implements ICommand {
 	}
 
 	/**
+	 * Sets the name of the creator for a given zone
+	 * 
+	 * @param arg0
+	 * @param arg1
+	 */
+	private void commandSetCreator(ICommandSender arg0, String[] arg1) {
+		if (arg1.length > 0) {
+			String a = getRestOfString(arg1, 2);
+			Zone z = Zones.instance.getZoneByName(a);
+			if (z == null) {
+				arg0.addChatMessage(new ChatComponentText("[Zone] Zone \"" + a + "\" not found."));
+			} else {
+				z.setZoneCreator(arg1[1]);
+				arg0.addChatMessage(new ChatComponentText("[Zone] Zone " + a + " now created by " + arg1[1] + "."));
+			}
+		}
+	}
+
+	/**
 	 * Protects a given zone
 	 * 
 	 * @param arg0
@@ -276,7 +298,7 @@ public class ZoneCommands implements ICommand {
 		if (arg1.length > 0) {
 			String a = getRestOfString(arg1, 1);
 			arg0.addChatMessage(new ChatComponentText("[Zone] Creating zone " + a));
-			Zones.instance.addZone(new Zone(a));
+			Zones.instance.addZone(new Zone(a, arg0.getName()));
 
 		}
 	}
@@ -315,7 +337,7 @@ public class ZoneCommands implements ICommand {
 			arg0.addChatMessage(new ChatComponentText("[Zone] Non-surface dimensions disallowed."));
 			return;
 		}
-		
+
 		int s = 1;
 		int h1 = 0;
 		int h2 = 0;
@@ -363,7 +385,7 @@ public class ZoneCommands implements ICommand {
 			arg0.addChatMessage(new ChatComponentText("[Zone] Non-surface dimensions disallowed."));
 			return;
 		}
-		
+
 		int x1 = Integer.parseInt(arg1[1]);
 		int y1 = Integer.parseInt(arg1[2]);
 		int z1 = Integer.parseInt(arg1[3]);
@@ -371,8 +393,6 @@ public class ZoneCommands implements ICommand {
 		int y2 = Integer.parseInt(arg1[5]);
 		int z2 = Integer.parseInt(arg1[6]);
 		String a = getRestOfString(arg1, 7);
-
-		
 
 		Zone z = Zones.instance.getZoneByName(a);
 		if (z == null) {

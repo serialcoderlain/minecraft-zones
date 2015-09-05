@@ -45,7 +45,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class Zones {
 	public static final String MODID = "Zones";
 	public static final String NAME = "Zones";
-	public static final String VERSION = "0.3.0";
+	public static final String VERSION = "0.4.0";
 
 	protected Map<EntityPlayer, Zone> playerMap = new HashMap<EntityPlayer, Zone>();
 	protected ZoneManager zoneManager = new ZoneManager();
@@ -68,7 +68,12 @@ public class Zones {
 						player.addChatMessage(new ChatComponentText("You've left " + playerMap.get(player).getName()));
 						Zones.net.sendTo(new AreaChangeMessage(""), player);
 					} else {
-						player.addChatMessage(new ChatComponentText("You have entered " + z.getName() + (z.isProtected() ? ". You feel safe here" : ".")));
+						if (!z.hasPlayerVisitedZone(player.getUniqueID().toString())) {
+							player.addChatMessage(new ChatComponentText("You have discovered " + z.getName() + (z.getZoneCreator() == null ? "" : ", founded by " + z.getZoneCreator()) + (z.isProtected() ? ". You feel safe here" : ".")));
+							z.setZoneVisitedByPlayer(player.getUniqueID().toString());
+						} else {
+							player.addChatMessage(new ChatComponentText("You have entered " + z.getName() + (z.isProtected() ? ". You feel safe here" : ".")));
+						}
 						Zones.net.sendTo(new AreaChangeMessage(z.getName()), player);
 					}
 				}

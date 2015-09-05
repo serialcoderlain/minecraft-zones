@@ -13,10 +13,11 @@ public class Zone {
 	protected String zoneName;
 
 	/** Creator name */
-	//protected String zoneCreator;
+	protected String zoneCreator = "System";
 
 	/** List of all the bounding boxes that makes up this zone */
 	protected List<ZoneBoundingBox> boundingBoxes = new ArrayList<ZoneBoundingBox>();
+	protected List<String> playerFound = new ArrayList<String>();
 
 	/** Is this zone protected */
 	private boolean isProtected = false;
@@ -28,7 +29,20 @@ public class Zone {
 	 *            The name of the zone
 	 */
 	public Zone(String newZoneName) {
+		this(newZoneName, "System");
+	}
+
+	/**
+	 * Creates a zone and specifies the creator of the zone
+	 * 
+	 * @param newZoneName
+	 *            The name of the zone
+	 * @param zoneCreator
+	 *            The name of the player creating the zone
+	 */
+	public Zone(String newZoneName, String zoneCreator) {
 		this.zoneName = newZoneName;
+		this.zoneCreator = zoneCreator;
 	}
 
 	/**
@@ -52,6 +66,45 @@ public class Zone {
 		return false;
 	}
 
+	/**
+	 * Checks to see if this zone has been visited by the specified user
+	 * 
+	 * @param username
+	 * @return True if user has visited this zone before
+	 */
+	public boolean hasPlayerVisitedZone(String username) {
+		if (playerFound == null)
+			return false;
+		return playerFound.contains(username);
+	}
+
+	/**
+	 * Set the zone as visited by the specified user
+	 * 
+	 * @param username
+	 */
+	public void setZoneVisitedByPlayer(String username) {
+		if (playerFound == null)
+			playerFound = new ArrayList<String>();
+		playerFound.add(username);
+	}
+
+	/**
+	 * Returns the name of the person creating the zone
+	 * @return
+	 */
+	public String getZoneCreator() {
+		return zoneCreator;
+	}
+	
+	/**
+	 * Sets the name of the person who created this zone
+	 * @param zoneCreator
+	 */
+	public void setZoneCreator(String zoneCreator) {
+		this.zoneCreator = zoneCreator;
+	}
+	
 	/**
 	 * Sets this zone as protected (hinders spawning of hostile mobs)
 	 * 
@@ -123,7 +176,7 @@ public class Zone {
 	 */
 	public boolean removeBox(ZoneBoundingBox zoneBoundingBox) {
 		ZoneBoundingBox r = null;
-		
+
 		if (boundingBoxes == null)
 			return false;
 
