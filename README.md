@@ -5,7 +5,7 @@ A Minecraft mod that allows for creation of named zones (client UI overlay) and 
 To create a new zone:
 > /zone create Name of my zone
 
-To add the current chunk (16,16,16 size area as defined by Minecraft):
+To add the current chunk (16, 16, 16 size area as defined by Minecraft):
 > /zone add Name of my zone
 
 To add the current chunk with a specific height:
@@ -22,3 +22,6 @@ To remove the area your are in from a zone:
 
 To delete zone:
 > /zone delete Name of my zone
+
+To change the name of the zone creator
+> /zone setcreator username Name of my zone
