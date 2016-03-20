@@ -21,7 +21,7 @@ import com.google.gson.stream.JsonWriter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -65,14 +65,14 @@ public class Zones {
 				Zone z = zoneManager.getZone(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
 				if (z != playerMap.get(player)) {
 					if (z == null) {
-						player.addChatMessage(new ChatComponentText("You've left " + playerMap.get(player).getName()));
+						player.addChatMessage(new TextComponentString("You've left " + playerMap.get(player).getName()));
 						Zones.net.sendTo(new AreaChangeMessage(""), player);
 					} else {
 						if (!z.hasPlayerVisitedZone(player.getUniqueID().toString())) {
-							player.addChatMessage(new ChatComponentText("You have discovered " + z.getName() + (z.getZoneCreator() == null ? "" : ", founded by " + z.getZoneCreator()) + (z.isProtected() ? ". You feel safe here" : ".")));
+							player.addChatMessage(new TextComponentString("You have discovered " + z.getName() + (z.getZoneCreator() == null ? "" : ", founded by " + z.getZoneCreator()) + (z.isProtected() ? ". You feel safe here" : ".")));
 							z.setZoneVisitedByPlayer(player.getUniqueID().toString());
 						} else {
-							player.addChatMessage(new ChatComponentText("You have entered " + z.getName() + (z.isProtected() ? ". You feel safe here" : ".")));
+							player.addChatMessage(new TextComponentString("You have entered " + z.getName() + (z.isProtected() ? ". You feel safe here" : ".")));
 						}
 						Zones.net.sendTo(new AreaChangeMessage(z.getName()), player);
 					}

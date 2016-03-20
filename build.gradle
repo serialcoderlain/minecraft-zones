@@ -18,14 +18,15 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'forge'
 
-version = "0.3"
+version = "0.5"
 group= "com.mycompanioncube.zones" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "zones"
 
 minecraft {
-    version = "1.8-11.14.1.1334"
-    runDir = "eclipse"
-    mappings = "snapshot_20141130"
+    version = "1.9-12.16.0.1769-1.9"
+    runDir = "run"   
+    mappings = "snapshot_20160312"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
 jar {

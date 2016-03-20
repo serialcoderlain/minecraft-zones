@@ -32,7 +32,7 @@ public class GuiZoneMessage extends Gui {
 			return;
 		}
 
-		ScaledResolution sR = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution sR = new ScaledResolution(mc);
 
 		int xPos = 10;
 		int yPos = 2;
