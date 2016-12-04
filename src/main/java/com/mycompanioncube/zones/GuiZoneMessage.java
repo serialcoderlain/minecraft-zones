@@ -28,7 +28,7 @@ public class GuiZoneMessage extends Gui {
 
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void onRenderExperienceBar(RenderGameOverlayEvent.Post event) {
-		if (event.type != ElementType.EXPERIENCE) {
+		if (event.getType() != ElementType.EXPERIENCE) {
 			return;
 		}
 

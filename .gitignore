@@ -57,3 +57,5 @@ logs/
 saves/
 options.txt
 *.json
+/.gradle/
+/build/

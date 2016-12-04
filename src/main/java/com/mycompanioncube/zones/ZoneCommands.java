@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.village.Village;
@@ -90,6 +91,8 @@ public class ZoneCommands implements ICommand {
 			commandMark(arg0, arg1);
 		} else if (arg1[0].toLowerCase().equals("delete")) {
 			commandDelete(arg0, arg1);
+		} else if (arg1[0].toLowerCase().equals("rename")) {
+			commandRename(arg0, arg1);
 		} else if (arg1[0].toLowerCase().equals("save")) {
 			Zones.instance.save();
 			arg0.addChatMessage(new TextComponentString("[Zone] Saved"));
@@ -147,6 +150,33 @@ public class ZoneCommands implements ICommand {
 	}
 
 	/**
+	 * Renames a zone
+	 * 
+	 * @param arg0
+	 * @param arg1
+	 */
+	private void commandRename(ICommandSender arg0, String[] arg1) {
+		String a = getRestOfString(arg1, 1);
+		String[] split = a.split(",");
+
+		if (split.length != 2) {
+			arg0.addChatMessage(new TextComponentString("[Zone] Input error."));
+			return;
+		}
+		Zone z = Zones.instance.getZoneByName(split[0]);		
+		if (z == null) {
+			arg0.addChatMessage(new TextComponentString("[Zone] Zone \"" + split[0] + "\" not found."));
+		} else {
+			if (split[1].trim().isEmpty()) 
+				arg0.addChatMessage(new TextComponentString("[Zone] New zone name invalid"));
+			else {
+				z.setName(split[1]);
+				arg0.addChatMessage(new TextComponentString("[Zone] Zone \"" + split[0] + "\" renamed to \"" + split[1] + "\""));
+			}
+		}
+	}
+	
+	/**
 	 * Marks the outer edges of all bounding boxes of a zone with whatever item
 	 * is in the players hand
 	 * 
@@ -193,18 +223,22 @@ public class ZoneCommands implements ICommand {
 		// arg0.getEntityWorld().
 		for (Object v : arg0.getEntityWorld().villageCollectionObj.getVillageList()) {
 			Village va = (Village) v;
-			System.out.println(va.getVillageRadius());
+			System.out.println(va.getVillageRadius());			
 
 			// if (arg1.length > 1) {
 			BlockPos center = va.getCenter();
-			int villageRadius = va.getVillageRadius() * 2;
+			int villageRadius = va.getVillageRadius()+1;
 
 			EntityPlayerMP p = ((EntityPlayerMP) arg0);
 			ItemStack item = p.getHeldItemMainhand();
-			Block blockFromItem = Block.getBlockFromItem(item.getItem());
+			Block blockFromItem = Block.REGISTRY.getObject(new ResourceLocation("minecraft", "air"));
+			if (item != null) {
+				blockFromItem = Block.getBlockFromItem(item.getItem());	
+			}
+			
 
 			System.out.println(va.getCenter());
-			Zone z1 = new Zone("Village", arg0.getName());
+			Zone z1 = new Zone("Village " + va.getNumVillagers(), arg0.getName());
 			Zones.instance.addZone(z1);
 
 			if (blockFromItem != null) {

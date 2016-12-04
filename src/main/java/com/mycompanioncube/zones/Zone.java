@@ -122,6 +122,10 @@ public class Zone {
 	public String getName() {
 		return zoneName;
 	}
+	
+	public void setName(String zoneName) {
+		this.zoneName = zoneName;
+	}
 
 	/**
 	 * Builder function that creates a new zone based on the given coordinates

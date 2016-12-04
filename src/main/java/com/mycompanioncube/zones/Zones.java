@@ -43,9 +43,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Zones.MODID, version = Zones.VERSION, name = Zones.NAME, acceptableRemoteVersions = "*")
 public class Zones {
-	public static final String MODID = "Zones";
+	public static final String MODID = "zones";
 	public static final String NAME = "Zones";
-	public static final String VERSION = "0.4.0";
+	public static final String VERSION = "0.8.0";
 
 	protected Map<EntityPlayer, Zone> playerMap = new HashMap<EntityPlayer, Zone>();
 	protected ZoneManager zoneManager = new ZoneManager();
@@ -59,8 +59,8 @@ public class Zones {
 	public class ZoneEventHandler {
 		@SubscribeEvent
 		public void onLivingUpdateEvent(LivingUpdateEvent event) {
-			if (event.entity instanceof EntityPlayerMP) {
-				EntityPlayerMP player = (EntityPlayerMP) event.entity;
+			if (event.getEntity() instanceof EntityPlayerMP) {
+				EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
 
 				Zone z = zoneManager.getZone(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
 				if (z != playerMap.get(player)) {
@@ -83,10 +83,10 @@ public class Zones {
 
 		@SubscribeEvent
 		public void onLivingSpawnEvent(LivingSpawnEvent event) {
-			if (!(event.world.provider instanceof WorldProviderSurface))
+			if (!(event.getWorld().provider instanceof WorldProviderSurface))
 				return;
 
-			Zone z = zoneManager.getZone((int) event.x, (int) event.y, (int) event.z);
+			Zone z = zoneManager.getZone((int) event.getX(), (int) event.getY(), (int) event.getZ());
 
 			if (z != null && z.isProtected()) {
 				event.setResult(Result.DENY);
@@ -96,7 +96,7 @@ public class Zones {
 
 		@SubscribeEvent
 		public void worldEvent(WorldEvent.Save event) {
-			if (event.world.provider instanceof WorldProviderSurface)
+			if (event.getWorld().provider instanceof WorldProviderSurface)
 				save();
 		}
 	}
